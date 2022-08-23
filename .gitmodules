@@ -2,7 +2,7 @@
 	path = flipper-fw
 	url = git@github.com:flipperdevices/flipperzero-firmware.git
 [submodule "flipper_proto"]
-	path = flipper_proto
+	path = flipper-proto
 	url = git@github.com:flipperdevices/flipperzero_protobuf_py.git
 [submodule "flipper-nfc"]
 	path = flipper-nfc
