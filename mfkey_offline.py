@@ -11,7 +11,7 @@ from flipperzero_protobuf.flipper_proto import FlipperProto
 from flipperzero_protobuf.cli_helpers import *
 from flipperzero_protobuf.flipper_base import FlipperProtoException
 
-flipper_params_file_path = '/ext/nfc/detect_reader.log'
+flipper_params_file_path = '/ext/nfc/.mfkey32.log'
 flipper_user_dict_path = '/ext/nfc/assets/mf_classic_dict_user.nfc'
 
 
@@ -86,6 +86,7 @@ def main():
 
         print("\nUpdating user dictionary")
         new_user_dict = '\n'.join(key for key in new_user_keys)
+        new_user_dict.join('\n')
 
         try:
             proto.rpc_write(
@@ -93,14 +94,14 @@ def main():
         except FlipperProtoException:
             print("Failed to update user dictionary")
             return
-        
-        print("\nDeleting reader log file")
 
-        try:
-            proto.rpc_delete(flipper_params_file_path)
-        except FlipperProtoException:
-            print("Failed to delete reader log file")
-            return
+    print("\nDeleting reader log file")
+
+    try:
+        proto.rpc_delete(flipper_params_file_path)
+    except FlipperProtoException:
+        print("Failed to delete reader log file")
+        return
 
 
 if __name__ == '__main__':
