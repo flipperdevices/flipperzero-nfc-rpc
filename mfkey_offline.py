@@ -7,9 +7,9 @@ import datetime
 import subprocess
 
 from google.protobuf.json_format import MessageToDict
-from flipperzero_protobuf.flipper_proto import FlipperProto
-from flipperzero_protobuf.cli_helpers import *
-from flipperzero_protobuf.flipper_base import FlipperProtoException
+from flipperzero_protobuf_py.flipperzero_protobuf.flipper_proto import FlipperProto
+from flipperzero_protobuf_py.flipperzero_protobuf.cli_helpers import *
+from flipperzero_protobuf_py.flipperzero_protobuf.flipper_base import FlipperProtoException
 
 flipper_params_file_path = '/ext/nfc/.mfkey32.log'
 flipper_user_dict_path = '/ext/nfc/assets/mf_classic_dict_user.nfc'
