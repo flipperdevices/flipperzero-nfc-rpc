@@ -1,6 +1,8 @@
 # flipperzero-nfc-rpc
 Examples for control NFC over RPC
 
+First exec "make" in "flipper-nfc" folder
+
 # Structure
 `flipper-fw` submodule points to supported flipper firmware
 
