@@ -1,5 +1,13 @@
 # Flipper Zero CLI RPC client using protobuf
 
+# Usage:
+# Connect the Flipper Zero with the corresponding firmware via USB
+# Run `python3 flipperzero_nfc_rpc_client.py`
+# 
+# Rebuilding the protobuf files:
+# Run `protoc nfc.proto --python_out=.` in the directory of this script
+# Run `protoc --nanopb_out=../compiled/ nfc.proto` in the firmware applications/plugins/nfc_rpc_actor/.
+
 import sys
 import time
 
