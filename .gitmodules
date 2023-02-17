@@ -1,6 +1,3 @@
-[submodule "flipper-fw"]
-	path = flipper-fw
-	url = git@github.com:flipperdevices/flipperzero-firmware.git
 [submodule "flipper-nfc"]
 	path = flipper-nfc
 	url = git@github.com:flipperdevices/flipperzero-nfc-tools.git
