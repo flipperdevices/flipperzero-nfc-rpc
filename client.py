@@ -9,9 +9,12 @@ from flipperzero_protobuf_py.flipperzero_protobuf.flipper_proto import FlipperPr
 from flipperzero_protobuf_py.flipperzero_protobuf.cli_helpers import *
 from flipperzero_protobuf_py.flipperzero_protobuf.flipper_base import FlipperProtoException
 
+
 class NfcRpc(BaseCommand):
     def __init__(self):
         super().__init__(name='root')
+
+        self.proto = FlipperProto()
 
         nfc_rpc_commands = {
             "quit": self.quit,
@@ -30,11 +33,32 @@ class NfcRpc(BaseCommand):
     def quit(self):
         return False
     
-    def nfca(self, *args):
-        pass
+    def bytes_to_hex(self, bytes, length=0):
+        if length == 0:
+            length = len(bytes)
+        return ':'.join('{:02x}'.format(x) for x in bytes[:length])
 
+    def nfca(self, *args):
+        req = nfc_proto.NfcAnticollisionRequest()
+        req.type = nfc_proto.anticollisionType.NFCA
+        self.proto.rpc_app_data_exchange_send(req.SerializeToString())
+        resp = self.proto.rpc_app_data_exchange_recv()
+        nfc_resp = nfc_proto.NfcAAnticollisionResponse()
+        try:
+            nfc_resp.ParseFromString(resp)
+        except:
+            print("Error parsing response")
+            return
+        uid = self.bytes_to_hex(nfc_resp.uid, nfc_resp.uid_len)
+        print(f"UID: {uid}")
+        sak = self.bytes_to_hex(nfc_resp.sak)
+        print(f"SAK: {sak}")
+        atqa = self.bytes_to_hex(nfc_resp.atqa)
+        print(f"ATQA: {atqa}")
 
     def run(self):
+        self.proto.rpc_app_start("NfcRpc", "RPC")
+
         while True:
             command = input("> ").strip()
             if not command:
