@@ -1,53 +1,29 @@
 #!/usr/bin/env python3
 
-import readline
+from base_command import BaseCommand
+from completer import Completer
+from mf_ultralight import MfUltralight
 
 
-import readline
-
-
-class NfcRpc:
+class NfcRpc(BaseCommand):
     def __init__(self):
-        self.commands = {
-            "help": self.help,
-            "?": self.help,
+        super().__init__(name='root')
+
+        nfc_rpc_commands = {
             "quit": self.quit,
             "q": self.quit,
-            "mfu": self.mfu_command,
         }
+        self.commands.update(nfc_rpc_commands)
 
-        readline.set_completer(self.completer)
-        readline.parse_and_bind("tab: complete")
+        self.protocols_objects = [MfUltralight()]
+        self.commands.update(
+            {x.get_name(): x.process for x in self.protocols_objects})
 
-    def completer(self, text, state):
-        options = [c for c in self.commands.keys() if c.startswith(text)]
-        try:
-            return options[state]
-        except IndexError:
-            return None
-
-    def help(self):
-        print("Available commands:", ", ".join(self.commands.keys()))
+        # Create completer
+        self.completer = Completer(self.commands)
 
     def quit(self):
         return False
-
-    def mfu_command(self, *args):
-        if not args:
-            # Print help for MfUltralight commands
-            mfu = MfUltralight()
-            mfu.help()
-            return
-
-        command = args[0].lower()
-        mfu = MfUltralight()
-
-        if command in mfu.commands:
-            # Call MfUltralight command with arguments
-            func = mfu.commands[command]
-            func(*args[1:])
-        else:
-            print("Unknown command: mfu", command)
 
     def run(self):
         while True:
@@ -65,32 +41,6 @@ class NfcRpc:
                     break
             else:
                 print("Unknown command:", command)
-
-
-class MfUltralight:
-    def __init__(self):
-        self.commands = {
-            "help": self.help,
-            "info": self.info,
-            "dump": self.dump,
-            "read": self.read,
-            "write": self.write,
-        }
-
-    def help(self):
-        print("Available commands:", ", ".join(self.commands.keys()))
-
-    def info(self):
-        print("MfUltralight info")
-
-    def dump(self, page):
-        print(f"MfUltralight dump page {page}")
-
-    def read(self, page):
-        print(f"MfUltralight read page {page}")
-
-    def write(self, page, data):
-        print(f"MfUltralight write {data} to page {page}")
 
 
 if __name__ == "__main__":
