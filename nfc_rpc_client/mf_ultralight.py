@@ -1,4 +1,4 @@
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class MfUltralight(BaseCommand):
     def __init__(self):
