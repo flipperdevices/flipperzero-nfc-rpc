@@ -39,11 +39,11 @@ class NfcRpc(BaseCommand):
         return ':'.join('{:02x}'.format(x) for x in bytes[:length])
 
     def nfca(self, *args):
-        req = nfc_proto.NfcAnticollisionRequest()
-        req.type = nfc_proto.anticollisionType.NFCA
+        req = nfc_proto.NfcaReadRequest()
+        req.ok = True
         self.proto.rpc_app_data_exchange_send(req.SerializeToString())
         resp = self.proto.rpc_app_data_exchange_recv()
-        nfc_resp = nfc_proto.NfcAAnticollisionResponse()
+        nfc_resp = nfc_proto.NfcaReadResponse()
         try:
             nfc_resp.ParseFromString(resp)
         except:
