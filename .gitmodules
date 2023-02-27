@@ -4,3 +4,6 @@
 [submodule "flipperzero_protobuf_py"]
 	path = flipperzero_protobuf_py
 	url = git@github.com:flipperdevices/flipperzero_protobuf_py.git
+[submodule "nanopb"]
+	path = nanopb
+	url = https://github.com/nanopb/nanopb.git
