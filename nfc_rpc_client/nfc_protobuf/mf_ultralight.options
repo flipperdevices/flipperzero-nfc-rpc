@@ -1,0 +1,3 @@
+PB_MfUltralight.ReadPageRequest.page        int_size:IS_16
+PB_MfUltralight.ReadPageResponse.page       int_size:IS_16
+PB_MfUltralight.ReadPageResponse.data       max_size: 16

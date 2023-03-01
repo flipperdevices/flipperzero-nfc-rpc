@@ -1,3 +1,0 @@
-PB.NfcaReadResponse.uid    max_size: 10
-PB.NfcaReadResponse.sak    max_size: 1
-PB.NfcaReadResponse.atqa    max_size: 2
