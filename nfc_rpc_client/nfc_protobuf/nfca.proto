@@ -3,12 +3,11 @@ syntax = "proto3";
 package PB_Nfca;
 option java_package = "com.flipperdevices.nfc.protobuf";
 
-message ReadRequest {
-}
+message ReadRequest {}
 
 message ReadResponse {
-    bytes uid = 2;
-    bytes sak = 3;
-    bytes atqa = 4;
-    uint32 uid_len = 5;
+  uint32 uid_len = 1;
+  bytes uid = 2;
+  bytes sak = 3;
+  bytes atqa = 4;
 }

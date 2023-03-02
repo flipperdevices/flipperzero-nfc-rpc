@@ -2,7 +2,7 @@ syntax = "proto3";
 import "nfca.proto";
 import "mf_ultralight.proto";
 
-package PB;
+package Nfc;
 option java_package = "com.flipperdevices.nfc.protobuf";
 
 enum CommandStatus {

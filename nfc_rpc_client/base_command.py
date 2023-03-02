@@ -11,10 +11,7 @@ class BaseCommand():
 
     def help(self):
         print("Available commands:", ", ".join(self.commands.keys()))
-    
-    def get_commands_names(self):
-        return list(self.commands.keys())
-    
+        
     def process(self, *args):
         if not args:
             self.help()
