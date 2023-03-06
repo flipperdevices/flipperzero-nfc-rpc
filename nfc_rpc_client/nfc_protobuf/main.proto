@@ -65,5 +65,7 @@ message Main {
         .PB_Nfca.ReadResponse nfca_read_resp = 4;
         .PB_MfUltralight.ReadPageRequest mf_ultralight_read_page_req = 5;
         .PB_MfUltralight.ReadPageResponse mf_ultralight_read_page_resp = 6;
+        .PB_MfUltralight.ReadVersionRequest mf_ultralight_read_version_req = 7;
+        .PB_MfUltralight.ReadVersionResponse mf_ultralight_read_version_resp = 8;
   }
 }
