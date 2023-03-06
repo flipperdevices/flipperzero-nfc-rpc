@@ -27,7 +27,7 @@ class MfUltralight(BaseCommand):
         mf_ultralight_proto = MfUltralightProto(self.transport)
         mf_ultralight_proto.read_page_req(int(page))
         resp = mf_ultralight_proto.read_page_resp()
-        print(resp)
+        print(f"{resp['data'].decode('utf-8')}")
 
     def write(self, page, data):
         print(f"MfUltralight write {data} to page {page}")

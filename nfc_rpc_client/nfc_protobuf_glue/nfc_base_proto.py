@@ -4,6 +4,9 @@ from ..nfc_protobuf_compiled import main_pb2
 class NfcBaseProto():
     def __init__(self, transport: NfcRpcTransport):
         self.transport = transport
+    
+    def decode_bytes(self, data, length=0):
+        return bytes(' '.join('{:02x}'.format(x) for x in data[:length]).encode('utf-8'))
 
     def send_cmd(self, cmd_data, cmd_name:str):
         cmd = main_pb2.Main()

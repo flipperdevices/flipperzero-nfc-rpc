@@ -14,7 +14,7 @@ class MfUltralightProto(NfcBaseProto):
 
     def read_page_resp(self):
         resp = self.receive_cmd("mf_ultralight_read_page_resp")
-        return {'page': resp.page, 'data': resp.data}
+        return {'page': resp.page, 'data': self.decode_bytes(resp.data, 16)}
 
     def read_version_req(self):
         req = mf_ultralight_pb2.ReadVersionRequest()

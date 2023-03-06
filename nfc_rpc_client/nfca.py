@@ -17,4 +17,8 @@ class Nfca(BaseCommand):
         nfca_proto = NfcaProto(self.transport)
         nfca_proto.read_req()
         resp = nfca_proto.read_resp()
-        print(resp)
+        print(f"Nfca detected!")
+        print(f"Uid: {resp['uid'].decode('utf-8')}")
+        print(f"ATQA: {resp['atqa'].decode('utf-8')}")
+        print(f"SAK: {resp['sak'].decode('utf-8')}")
+        
