@@ -1,51 +1,48 @@
 import readline
-import sys
-
-# root = {'?', 'help', 'nfca', 'q', 'quit', 'mfu'}
-
-# mfu = {'read', 'write', 'version', '?', 'help'}
-
-# nfca = {'read', 'info', '?', 'help'}
+from .nfc_commands.base_command import BaseCommand
 
 
 class Completer():
-    def __init__(self, root_cmd):
+    def __init__(self, root_cmd: BaseCommand) -> None:
         self.root_cmd = root_cmd
+        completer_delims = readline.get_completer_delims()
+        readline.set_completer_delims(completer_delims.replace('-', ''))
         readline.set_completer(self.complete)
         readline.parse_and_bind("tab: complete")
 
-        self.root_cmd_list = root_cmd.get_commands().keys()
-        
+    def get_options(self, cmd: BaseCommand, line_buffer: list, new_word: bool) -> list:
+        if cmd.has_arguments:
+            if len(line_buffer) == 0:
+                return [arg + ' ' for arg in cmd.get_arguments()]
+            else:
+                start_word = '' if new_word else line_buffer[-1]
+                options = [arg + ' ' for arg in cmd.get_arguments()
+                           if arg.startswith(start_word)]
+                for word in line_buffer:
+                    if word in cmd.get_arguments():
+                        options.remove(word + ' ')
+                return options
+        elif cmd.has_children:
+            child_list = cmd.get_children_list()
+            if len(line_buffer) == 0:
+                return child_list
+            elif line_buffer[0] in child_list:
+                return self.get_options(cmd.get_child(line_buffer[0]), line_buffer[1:], new_word)
+            else:
+                return [child + ' ' for child in cmd.get_children_list() if child.startswith(line_buffer[0])]
 
     def complete(self, text, state):
-        cmd = readline.get_line_buffer().split()
-        cmd_len = len(cmd)
+        line_buffer = readline.get_line_buffer()
+        new_word = False
+        if line_buffer == '':
+            new_word = True
+        elif line_buffer[-1] == ' ':
+            new_word = True
 
-        if cmd_len < 2:
-            options = [c for c in self.root_cmd.get_commands().keys() if c.startswith(text)]
-        elif cmd_len == 2:
-            children = self.root_cmd.get_children()
-            partly_typed = False
-            for child in children:
-                if cmd[0] in child.get_commands():
-                    partly_typed = False
-                else:
-                
-                
-
-        # try:
-        #     cmd = readline.get_line_buffer().split()[0]
-        # except IndexError:
-        #     cmd = ''
-
-        # if cmd == 'nfca':
-        #     options = [c for c in nfca if c.startswith(text)]
-        # elif cmd == 'mfu':
-        #     options = [c for c in mfu if c.startswith(text)]
-        # else:
-        #     options = [c for c in root if c.startswith(text)]
+        options = self.get_options(
+            self.root_cmd, line_buffer.split(), new_word)
 
         try:
-            return options[state] + ' '
+            return options[state]
         except IndexError:
             return None
