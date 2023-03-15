@@ -15,6 +15,18 @@ class MfUltralight(BaseCommand):
             "version": self.read_version,
         }
         self.commands.update(mfu_commands)
+        self.commands_args = {
+            'read': {'--page'},
+            'write': {'--page', '--data'},
+        }
+
+    def get_arguments(self, command_name):
+        args = {}
+        try:
+            args.update(self.commands_args[command_name])
+        except:
+            pass
+        return args
 
     def info(self):
         print("MfUltralight info")
@@ -31,7 +43,7 @@ class MfUltralight(BaseCommand):
 
     def write(self, page, data):
         print(f"MfUltralight write {data} to page {page}")
-    
+
     def read_version(self):
         print("MfUltralignt read version")
         mf_ultralight_proto = MfUltralightProto(self.transport)

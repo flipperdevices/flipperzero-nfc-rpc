@@ -9,6 +9,12 @@ class BaseCommand():
     def get_name(self):
         return self.name
 
+    def get_commands(self):
+        return self.commands
+
+    def get_arguments(self, command_name):
+        return {}
+
     def help(self):
         print("Available commands:", ", ".join(self.commands.keys()))
         

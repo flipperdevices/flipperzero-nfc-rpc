@@ -7,35 +7,37 @@ from nfc_rpc_client.mf_ultralight import MfUltralight
 from nfc_rpc_client.nfc_rpc_transport import NfcRpcTransport
 
 
-class NfcRpc(BaseCommand):
-    def __init__(self):
+class NfcRpcRootCommand(BaseCommand):
+    def __init__(self, transport):
         super().__init__(name='root')
-
-        self.transport = NfcRpcTransport()
-
-        nfc_rpc_commands = {
+        root_commands = {
             "quit": self.quit,
             "q": self.quit,
         }
-        self.commands.update(nfc_rpc_commands)
-
-        self.protocols_objects = [
-            Nfca(self.transport),
-            MfUltralight(self.transport),
+        self.commands.update(root_commands)
+        self.children = [
+            Nfca(transport),
+            MfUltralight(transport),
         ]
-        self.commands.update(
-            {x.get_name(): x.process for x in self.protocols_objects})
 
-        # Create completer
-        self.completer = Completer(self.commands)
+        self.commands.update({x.get_name(): x.process for x in self.children})
 
     def quit(self):
         return False
+    
+    def get_children(self):
+        return self.children
 
-    def bytes_to_hex(self, bytes, length=0):
-        if length == 0:
-            length = len(bytes)
-        return ':'.join('{:02x}'.format(x) for x in bytes[:length])
+
+
+class NfcRpc():
+    def __init__(self):
+        # self.transport = NfcRpcTransport()
+        self.transport = None
+        self.root_cmd = NfcRpcRootCommand(self.transport)
+
+        # Create completer
+        self.completer = Completer(self.root_cmd)
 
     def run(self):
         while True:
@@ -47,8 +49,8 @@ class NfcRpc(BaseCommand):
             parts = command.split()
             func_name = parts[0].lower()
 
-            if func_name in self.commands:
-                func = self.commands[func_name]
+            if func_name in self.root_cmd.get_commands().keys():
+                func = self.root_cmd.get_commands()[func_name]
                 if func(*parts[1:]) == False:
                     break
             else:
