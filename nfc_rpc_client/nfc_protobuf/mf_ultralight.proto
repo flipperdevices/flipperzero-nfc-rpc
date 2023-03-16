@@ -22,3 +22,12 @@ message ReadVersionResponse {
   uint32 storage_size = 7;
   uint32 protocol_type = 8;
 }
+
+message WritePageRequest {
+  uint32 page = 1;
+  bytes data = 2;
+}
+
+message WritePageResponse { 
+  bool result = 1;
+}

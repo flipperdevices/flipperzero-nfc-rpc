@@ -52,6 +52,9 @@ class BaseCommand:
     def execute(self, args):
         pass
 
+    def format_hex_string(self, data:str) -> bytes:
+        return bytes.fromhex(data)
+
     def process(self, args):
         if self.has_children:
             if len(args) > 0:
@@ -63,10 +66,10 @@ class BaseCommand:
             else:
                 self.help()
         elif self.has_arguments:
-            try:
-                parsed_args = self.parser.parse_args(args)
-                return self.execute(parsed_args)
-            except:
-                pass
+            # try:
+            parsed_args = self.parser.parse_args(args)
+            return self.execute(parsed_args)
+            # except:
+            #     pass
         else:
             return self.execute(None)

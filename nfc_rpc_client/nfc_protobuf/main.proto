@@ -6,66 +6,68 @@ package Nfc;
 option java_package = "com.flipperdevices.nfc.protobuf";
 
 enum CommandStatus {
-    OK = 0;
+  OK = 0;
 
-    /**< Common Errors */
-    ERROR = 1;        /**< Unknown error */
-    ERROR_DECODE = 2; /**< Command can't be decoded successfully - command_id in
-                        response may be wrong! */
-    ERROR_NOT_IMPLEMENTED = 3; /**< Command succesfully decoded, but not implemented (deprecated or
-                not yet implemented) */
-    ERROR_BUSY = 4; /**< Somebody took global lock, so not all commands are available */
-    ERROR_CONTINUOUS_COMMAND_INTERRUPTED = 14; /**< Not received has_next == 0 */
-    ERROR_INVALID_PARAMETERS = 15; /**< not provided (or provided invalid) crucial
-                                        parameters to perform rpc */
+  /**< Common Errors */
+  ERROR = 1;        /**< Unknown error */
+  ERROR_DECODE = 2; /**< Command can't be decoded successfully - command_id in
+                      response may be wrong! */
+  ERROR_NOT_IMPLEMENTED = 3; /**< Command succesfully decoded, but not
+              implemented (deprecated or not yet implemented) */
+  ERROR_BUSY =
+      4; /**< Somebody took global lock, so not all commands are available */
+  ERROR_CONTINUOUS_COMMAND_INTERRUPTED = 14; /**< Not received has_next == 0 */
+  ERROR_INVALID_PARAMETERS = 15; /**< not provided (or provided invalid) crucial
+                                      parameters to perform rpc */
 
-    /**< Storage Errors */
-    ERROR_STORAGE_NOT_READY = 5;         /**< FS not ready */
-    ERROR_STORAGE_EXIST = 6;             /**< File/Dir alrady exist */
-    ERROR_STORAGE_NOT_EXIST = 7;         /**< File/Dir does not exist */
-    ERROR_STORAGE_INVALID_PARAMETER = 8; /**< Invalid API parameter */
-    ERROR_STORAGE_DENIED = 9;            /**< Access denied */
-    ERROR_STORAGE_INVALID_NAME = 10;     /**< Invalid name/path */
-    ERROR_STORAGE_INTERNAL = 11;         /**< Internal error */
-    ERROR_STORAGE_NOT_IMPLEMENTED = 12;  /**< Functon not implemented */
-    ERROR_STORAGE_ALREADY_OPEN = 13;     /**< File/Dir already opened */
-    ERROR_STORAGE_DIR_NOT_EMPTY =
-        18; /**< Directory, you're going to remove is not empty */
+  /**< Storage Errors */
+  ERROR_STORAGE_NOT_READY = 5;         /**< FS not ready */
+  ERROR_STORAGE_EXIST = 6;             /**< File/Dir alrady exist */
+  ERROR_STORAGE_NOT_EXIST = 7;         /**< File/Dir does not exist */
+  ERROR_STORAGE_INVALID_PARAMETER = 8; /**< Invalid API parameter */
+  ERROR_STORAGE_DENIED = 9;            /**< Access denied */
+  ERROR_STORAGE_INVALID_NAME = 10;     /**< Invalid name/path */
+  ERROR_STORAGE_INTERNAL = 11;         /**< Internal error */
+  ERROR_STORAGE_NOT_IMPLEMENTED = 12;  /**< Functon not implemented */
+  ERROR_STORAGE_ALREADY_OPEN = 13;     /**< File/Dir already opened */
+  ERROR_STORAGE_DIR_NOT_EMPTY =
+      18; /**< Directory, you're going to remove is not empty */
 
-    /**< Application Errors */
-    ERROR_APP_CANT_START = 16;    /**< Can't start app - internal error */
-    ERROR_APP_SYSTEM_LOCKED = 17; /**< Another app is running */
-    ERROR_APP_NOT_RUNNING =
-        21; /**< App is not running or doesn't support RPC commands */
-    ERROR_APP_CMD_ERROR = 22; /**< Command execution error */
+  /**< Application Errors */
+  ERROR_APP_CANT_START = 16;    /**< Can't start app - internal error */
+  ERROR_APP_SYSTEM_LOCKED = 17; /**< Another app is running */
+  ERROR_APP_NOT_RUNNING =
+      21; /**< App is not running or doesn't support RPC commands */
+  ERROR_APP_CMD_ERROR = 22; /**< Command execution error */
 
-    /**< Virtual Display Errors */
-    ERROR_VIRTUAL_DISPLAY_ALREADY_STARTED =
-        19; /**< Virtual Display session can't be started twice */
-    ERROR_VIRTUAL_DISPLAY_NOT_STARTED =
-        20; /**< Virtual Display session can't be stopped when it's not started */
+  /**< Virtual Display Errors */
+  ERROR_VIRTUAL_DISPLAY_ALREADY_STARTED =
+      19; /**< Virtual Display session can't be started twice */
+  ERROR_VIRTUAL_DISPLAY_NOT_STARTED =
+      20; /**< Virtual Display session can't be stopped when it's not started */
 
-    /**< GPIO Errors */
-    ERROR_GPIO_MODE_INCORRECT = 58;
-    ERROR_GPIO_UNKNOWN_PIN_MODE = 59;
+  /**< GPIO Errors */
+  ERROR_GPIO_MODE_INCORRECT = 58;
+  ERROR_GPIO_UNKNOWN_PIN_MODE = 59;
 }
 
 /* There are Server commands (e.g. Storage_write), which have no body message
  * in response. But 'oneof' obligate to have at least 1 encoded message
  * in scope. For this needs Empty message is implemented.
  */
-message Empty {
-}
+message Empty {}
 
 message Main {
-    CommandStatus command_status = 1;
-    oneof content {
-        Empty empty = 2;
-        .PB_Nfca.ReadRequest nfca_read_req = 3;
-        .PB_Nfca.ReadResponse nfca_read_resp = 4;
-        .PB_MfUltralight.ReadPageRequest mf_ultralight_read_page_req = 5;
-        .PB_MfUltralight.ReadPageResponse mf_ultralight_read_page_resp = 6;
-        .PB_MfUltralight.ReadVersionRequest mf_ultralight_read_version_req = 7;
-        .PB_MfUltralight.ReadVersionResponse mf_ultralight_read_version_resp = 8;
+  CommandStatus command_status = 1;
+  oneof content {
+    Empty empty = 2;
+    .PB_Nfca.ReadRequest nfca_read_req = 3;
+    .PB_Nfca.ReadResponse nfca_read_resp = 4;
+    .PB_MfUltralight.ReadPageRequest mf_ultralight_read_page_req = 5;
+    .PB_MfUltralight.ReadPageResponse mf_ultralight_read_page_resp = 6;
+    .PB_MfUltralight.ReadVersionRequest mf_ultralight_read_version_req = 7;
+    .PB_MfUltralight.ReadVersionResponse mf_ultralight_read_version_resp = 8;
+    .PB_MfUltralight.WritePageRequest mf_ultralight_write_page_req = 9;
+    .PB_MfUltralight.WritePageResponse mf_ultralight_write_page_resp = 10;
   }
 }

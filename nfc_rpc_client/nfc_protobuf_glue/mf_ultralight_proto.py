@@ -30,3 +30,13 @@ class MfUltralightProto(NfcBaseProto):
                 'prod_ver_minor': resp.prod_ver_minor,
                 'storage_size': resp.storage_size,
                 'protocol_type': resp.protocol_type}
+    
+    def write_page_req(self, page: int, data: bytes) -> None:
+        req = mf_ultralight_pb2.WritePageRequest()
+        req.page = page
+        req.data = data
+        self.send_cmd(req, "mf_ultralight_write_page_req")
+    
+    def write_page_resp(self) -> bool:
+        resp = self.receive_cmd("mf_ultralight_write_page_resp")
+        return resp.result

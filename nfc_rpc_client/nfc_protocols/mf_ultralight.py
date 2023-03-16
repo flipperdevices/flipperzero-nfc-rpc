@@ -14,5 +14,6 @@ class MfUltralight():
         self.mf_ul_proto.read_version_req()
         return self.mf_ul_proto.read_version_resp()
 
-    def write_page(self, page: int, data: list) -> bool:
-        return False
+    def write_page(self, page: int, data: bytes) -> bool:
+        self.mf_ul_proto.write_page_req(page, data)
+        return self.mf_ul_proto.write_page_resp()

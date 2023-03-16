@@ -19,10 +19,11 @@ class MfUltralightCommand(BaseCommand):
         def __init__(self, mf_ultralight: MfUltralight):
             super().__init__(name='write')
             self.add_argument('-p', '--page', type=int, required=True)
-            self.add_argument('-d', '--data', type=str, required=True)
+            self.add_argument('-d', '--data', type=self.format_hex_string, required=True)
             self.mf_ultralight = mf_ultralight
 
         def execute(self, args) -> None:
+            print(f"Writing MfUltralight page {args.page} data {args.data}")
             result = self.mf_ultralight.write_page(args.page, args.data)
             if result:
                 print(f"Page {args.page} write success")
