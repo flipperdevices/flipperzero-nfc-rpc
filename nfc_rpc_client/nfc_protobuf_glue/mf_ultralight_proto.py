@@ -14,7 +14,7 @@ class MfUltralightProto(NfcBaseProto):
 
     def read_page_resp(self) -> dict:
         resp = self.receive_cmd("mf_ultralight_read_page_resp")
-        return {'error': resp.error, 'page': resp.page, 'data': self.decode_bytes(resp.data, 16)}
+        return {'error': resp.error, 'page': resp.page, 'data': self.decode_bytes(resp.data, 4)}
 
     def read_version_req(self) -> None:
         req = mf_ultralight_pb2.ReadVersionRequest()
@@ -22,7 +22,8 @@ class MfUltralightProto(NfcBaseProto):
 
     def read_version_resp(self) -> dict:
         resp = self.receive_cmd("mf_ultralight_read_version_resp")
-        return {'header': resp.header,
+        return {'error': resp.error,
+                'header': resp.header,
                 'vendor_id': resp.vendor_id,
                 'prod_type': resp.prod_type,
                 'prod_subtype': resp.prod_subtype,
@@ -40,3 +41,11 @@ class MfUltralightProto(NfcBaseProto):
     def write_page_resp(self) -> bool:
         resp = self.receive_cmd("mf_ultralight_write_page_resp")
         return {'error': resp.error}
+
+    def read_signature_req(self) -> None:
+        req = mf_ultralight_pb2.ReadSignatureRequest()
+        self.send_cmd(req, "mf_ultralight_read_signature_req")
+    
+    def read_signature_resp(self) -> dict:
+        resp = self.receive_cmd("mf_ultralight_read_signature_resp")
+        return {'error': resp.error, 'data': self.decode_bytes(resp.data, 32)}

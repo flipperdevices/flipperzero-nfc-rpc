@@ -42,3 +42,10 @@ message WritePageResponse {
   Error error = 1;
   bool result = 2;
 }
+
+message ReadSignatureRequest {}
+
+message ReadSignatureResponse {
+  Error error = 1;
+  bytes data = 2;
+}

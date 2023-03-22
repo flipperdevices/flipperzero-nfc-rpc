@@ -29,5 +29,7 @@ message Main {
     .PB_MfUltralight.ReadVersionResponse mf_ultralight_read_version_resp = 8;
     .PB_MfUltralight.WritePageRequest mf_ultralight_write_page_req = 9;
     .PB_MfUltralight.WritePageResponse mf_ultralight_write_page_resp = 10;
+    .PB_MfUltralight.ReadSignatureRequest mf_ultralight_read_signature_req = 11;
+    .PB_MfUltralight.ReadSignatureResponse mf_ultralight_read_signature_resp = 12;
   }
 }
