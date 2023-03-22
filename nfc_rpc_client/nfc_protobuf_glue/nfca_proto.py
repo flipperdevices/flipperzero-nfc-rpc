@@ -13,7 +13,8 @@ class NfcaProto(NfcBaseProto):
 
     def read_resp(self) -> dict:
         resp = self.receive_cmd("nfca_read_resp")
-        return {"uid length": resp.uid_len,
+        return {"error": resp.error,
+                "uid length": resp.uid_len,
                 "uid": self.decode_bytes(resp.uid, resp.uid_len),
                 "sak": self.decode_bytes(resp.sak, 1),
                 "atqa": self.decode_bytes(resp.atqa, 2)}

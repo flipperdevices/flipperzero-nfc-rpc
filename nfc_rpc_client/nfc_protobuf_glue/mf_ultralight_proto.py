@@ -14,7 +14,7 @@ class MfUltralightProto(NfcBaseProto):
 
     def read_page_resp(self) -> dict:
         resp = self.receive_cmd("mf_ultralight_read_page_resp")
-        return {'page': resp.page, 'data': self.decode_bytes(resp.data, 16)}
+        return {'error': resp.error, 'page': resp.page, 'data': self.decode_bytes(resp.data, 16)}
 
     def read_version_req(self) -> None:
         req = mf_ultralight_pb2.ReadVersionRequest()
@@ -30,13 +30,13 @@ class MfUltralightProto(NfcBaseProto):
                 'prod_ver_minor': resp.prod_ver_minor,
                 'storage_size': resp.storage_size,
                 'protocol_type': resp.protocol_type}
-    
+
     def write_page_req(self, page: int, data: bytes) -> None:
         req = mf_ultralight_pb2.WritePageRequest()
         req.page = page
         req.data = data
         self.send_cmd(req, "mf_ultralight_write_page_req")
-    
+
     def write_page_resp(self) -> bool:
         resp = self.receive_cmd("mf_ultralight_write_page_resp")
-        return resp.result
+        return {'error': resp.error}

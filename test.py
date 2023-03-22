@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 
-import argparse
+import asyncio
+from bleak import BleakScanner
 
-def hexstr2list(data):
-    data_bytes = bytes.fromhex(data)
-    print([x for x in data_bytes])
-    return [int(x, 16) for x in data_bytes]
+async def main():
+    devices = await BleakScanner.discover()
+    for d in devices:
+        print(d)
 
-parser = argparse.ArgumentParser(prog='test')
-parser.add_argument('-d', '--data', type=hexstr2list, required=True)
-
-args = parser.parse_args()
-print(args.data)
+asyncio.run(main())

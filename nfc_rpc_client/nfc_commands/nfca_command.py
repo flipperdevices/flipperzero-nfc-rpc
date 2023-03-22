@@ -11,10 +11,13 @@ class NfcaCommand(BaseCommand):
 
         def execute(self, args):
             result = self.nfca.read()
-            print("Nfca detected")
-            print(f"UID: {result['uid']}")
-            print(f"ATQA: {result['atqa']}")
-            print(f"SAK: {result['sak']}")
+            if result['error'] == 0:
+                print("Nfca detected")
+                print(f"UID: {result['uid']}")
+                print(f"ATQA: {result['atqa']}")
+                print(f"SAK: {result['sak']}")
+            else:
+                print(f"Error: {result['error']}")
 
     def __init__(self, transport: NfcRpcTransport):
         super().__init__(name='nfca')

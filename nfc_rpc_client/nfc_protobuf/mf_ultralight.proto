@@ -3,24 +3,34 @@ syntax = "proto3";
 package PB_MfUltralight;
 option java_package = "com.flipperdevices.nfc.protobuf";
 
+enum Error {
+  None = 0;
+  NotPresent = 1;
+  Protocol = 2;
+  Auth = 3;
+  Timeout = 4;
+}
+
 message ReadPageRequest { uint32 page = 1; }
 
 message ReadPageResponse {
-  uint32 page = 1;
-  bytes data = 2;
+  Error error = 1;
+  uint32 page = 2;
+  bytes data = 3;
 }
 
 message ReadVersionRequest {}
 
 message ReadVersionResponse {
-  uint32 header = 1;
-  uint32 vendor_id = 2;
-  uint32 prod_type = 3;
-  uint32 prod_subtype = 4;
-  uint32 prod_ver_major = 5;
-  uint32 prod_ver_minor = 6;
-  uint32 storage_size = 7;
-  uint32 protocol_type = 8;
+  Error error = 1;
+  uint32 header = 2;
+  uint32 vendor_id = 3;
+  uint32 prod_type = 4;
+  uint32 prod_subtype = 5;
+  uint32 prod_ver_major = 6;
+  uint32 prod_ver_minor = 7;
+  uint32 storage_size = 8;
+  uint32 protocol_type = 9;
 }
 
 message WritePageRequest {
@@ -29,5 +39,6 @@ message WritePageRequest {
 }
 
 message WritePageResponse { 
-  bool result = 1;
+  Error error = 1;
+  bool result = 2;
 }
