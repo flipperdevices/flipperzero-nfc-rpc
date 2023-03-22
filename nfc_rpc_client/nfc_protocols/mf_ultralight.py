@@ -21,3 +21,12 @@ class MfUltralight():
     def read_signature(self) -> dict:
         self.mf_ul_proto.read_signature_req()
         return self.mf_ul_proto.read_signature_resp()
+    
+    def read_counter(self, counter_num: int) -> dict:
+        self.mf_ul_proto.read_counter_req(counter_num)
+        return self.mf_ul_proto.read_counter_resp()
+    
+    def read_tearing_flag(self, flag_num: int) -> dict:
+        self.mf_ul_proto.read_tearing_flag_req(flag_num)
+        return self.mf_ul_proto.read_counter_resp()
+    

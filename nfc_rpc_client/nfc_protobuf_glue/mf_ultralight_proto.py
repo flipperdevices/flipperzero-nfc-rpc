@@ -45,7 +45,25 @@ class MfUltralightProto(NfcBaseProto):
     def read_signature_req(self) -> None:
         req = mf_ultralight_pb2.ReadSignatureRequest()
         self.send_cmd(req, "mf_ultralight_read_signature_req")
-    
+
     def read_signature_resp(self) -> dict:
         resp = self.receive_cmd("mf_ultralight_read_signature_resp")
         return {'error': resp.error, 'data': self.decode_bytes(resp.data, 32)}
+
+    def read_counter_req(self, counter_num: int) -> None:
+        req = mf_ultralight_pb2.ReadCounterRequest()
+        req.counter_num = counter_num
+        self.send_cmd(req, "mf_ultralight_read_counter_req")
+
+    def read_counter_resp(self) -> dict:
+        resp = self.receive_cmd("mf_ultralight_read_counter_resp")
+        return {'error': resp.error, 'counter_num': resp.counter_num, 'data': self.decode_bytes(resp.data, 3)}
+
+    def read_tearing_flag_req(self, flag_num: int) -> None:
+        req = mf_ultralight_pb2.ReadTearingFlagRequest()
+        req.flag_num = flag_num
+        self.send_cmd(req, "mf_ultralight_read_tearing_flag_req")
+
+    def read_tearing_flag_resp(self) -> dict:
+        resp = self.receive_cmd("mf_ultralight_read_tearing_flag_resp")
+        return {'error': resp.error, 'flag_num': resp.flag_num, 'data': self.decode_bytes(resp.data, 1)}

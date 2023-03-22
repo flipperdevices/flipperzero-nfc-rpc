@@ -38,7 +38,7 @@ message WritePageRequest {
   bytes data = 2;
 }
 
-message WritePageResponse { 
+message WritePageResponse {
   Error error = 1;
   bool result = 2;
 }
@@ -48,4 +48,20 @@ message ReadSignatureRequest {}
 message ReadSignatureResponse {
   Error error = 1;
   bytes data = 2;
+}
+
+message ReadCounterRequest { uint32 counter_num = 1; }
+
+message ReadCounterResponse {
+  Error error = 1;
+  uint32 counter_num = 2;
+  bytes data = 3;
+}
+
+message ReadTearingFlagRequest { uint32 flag_num = 1; }
+
+message ReadTearingFlagResponse {
+  Error error = 1;
+  uint32 flag_num = 2;
+  bytes data = 3;
 }

@@ -70,6 +70,36 @@ class MfUltralightCommand(BaseCommand):
                 print(
                     f"Read signature failed. Error: {result['error']}")
 
+    class ReadCounterCommand(BaseCommand):
+        def __init__(self, mf_ultralight: MfUltralight):
+            super().__init__(name='read_counter')
+            self.add_argument('-c', '--counter', type=int, required=True)
+            self.mf_ultralight = mf_ultralight
+
+        def execute(self, args) -> None:
+            print(f"Reading {args.counter} counter")
+            result = self.mf_ultralight.read_counter(args.counter)
+            if result['error'] == 0:
+                print(f"Counter value {result['data']}")
+            else:
+                print(
+                    f"Read {args.counter} counter failed. Error: {result['error']}")
+
+    class ReadTeringFlagCommand(BaseCommand):
+        def __init__(self, mf_ultralight: MfUltralight):
+            super().__init__(name='read_tearing_flag')
+            self.add_argument('-f', '--flag', type=int, required=True)
+            self.mf_ultralight = mf_ultralight
+
+        def execute(self, args) -> None:
+            print(f"Reading {args.flag} tearing flag")
+            result = self.mf_ultralight.read_tearing_flag(args.flag)
+            if result['error'] == 0:
+                print(f"Tering flag value {result['data']}")
+            else:
+                print(
+                    f"Read {args.flag} tearing flag failed. Error: {result['error']}")
+
     def __init__(self, transport: NfcRpcTransport):
         super().__init__(name='mf_ultralight')
         self.mf_ultralight = MfUltralight(transport)
@@ -77,3 +107,5 @@ class MfUltralightCommand(BaseCommand):
         self.add_child(self.WritePageCommand(self.mf_ultralight))
         self.add_child(self.ReadVersionCommand(self.mf_ultralight))
         self.add_child(self.ReadSignatureCommand(self.mf_ultralight))
+        self.add_child(self.ReadCounterCommand(self.mf_ultralight))
+        self.add_child(self.ReadTeringFlagCommand(self.mf_ultralight))
