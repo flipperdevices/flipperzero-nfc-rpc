@@ -67,3 +67,20 @@ class MfUltralightProto(NfcBaseProto):
     def read_tearing_flag_resp(self) -> dict:
         resp = self.receive_cmd("mf_ultralight_read_tearing_flag_resp")
         return {'error': resp.error, 'flag_num': resp.flag_num, 'data': self.decode_bytes(resp.data, 1)}
+
+    def emulate_start_req(self, data: bytes) -> None:
+        req = mf_ultralight_pb2.EmulateStartRequest()
+        req.data = data
+        self.send_cmd(req, "mf_ultralight_emulate_start_req")
+
+    def emulate_start_resp(self) -> dict:
+        resp = self.receive_cmd("mf_ultralight_emulate_start_resp")
+        return {"error": resp.error}
+
+    def emulate_stop_req(self) -> None:
+        req = mf_ultralight_pb2.EmulateStopRequest()
+        self.send_cmd(req, "mf_ultralight_emulate_stop_req")
+
+    def emulate_stop_resp(self) -> dict:
+        resp = self.receive_cmd("mf_ultralight_emulate_stop_resp")
+        return {"error": resp.error}

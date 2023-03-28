@@ -18,3 +18,23 @@ class NfcaProto(NfcBaseProto):
                 "uid": self.decode_bytes(resp.uid, resp.uid_len),
                 "sak": self.decode_bytes(resp.sak, 1),
                 "atqa": self.decode_bytes(resp.atqa, 2)}
+
+    def emulate_start_req(self, uid: bytes, atqa: bytes, sak: bytes) -> None:
+        req = nfca_pb2.EmulateStartRequest()
+        req.uid = uid
+        req.uid_len = len(uid)
+        req.atqa = atqa
+        req.sak = sak
+        self.send_cmd(req, "nfca_emulate_start_req")
+
+    def emulate_start_resp(self) -> dict:
+        resp = self.receive_cmd("nfca_emulate_start_resp")
+        return {"error": resp.error}
+
+    def emulate_stop_req(self) -> None:
+        req = nfca_pb2.EmulateStopRequest()
+        self.send_cmd(req, "nfca_emulate_stop_req")
+
+    def emulate_stop_resp(self) -> dict:
+        resp = self.receive_cmd("nfca_emulate_stop_resp")
+        return {"error": resp.error}
