@@ -1,6 +1,7 @@
 from .base_command import BaseCommand
 from ..nfc_protocols.mf_ultralight import MfUltralight
 from ..nfc_rpc_transport import NfcRpcTransport
+import signal
 
 
 class MfUltralightCommand(BaseCommand):
@@ -100,6 +101,28 @@ class MfUltralightCommand(BaseCommand):
                 print(
                     f"Read {args.flag} tearing flag failed. Error: {result['error']}")
 
+    class EmulateCommand(BaseCommand):
+        def __init__(self, mf_ultralight: MfUltralight):
+            super().__init__(name='emulate')
+            self.mf_ultarlight = mf_ultralight
+        
+        def execute(self, args) -> None:
+            print(f"Emulating Mf Ultralight")
+            data = bytes(199)
+            result = self.mf_ultarlight.emulate_start(data)
+            if result['error'] == 0:
+                print("Press Ctrl+C to abort")
+                signal.sigwait({signal.SIGINT})
+                result = self.mf_ultarlight.emulate_stop()
+                if result["error"] == 0:
+                    print()
+                    print("Emulation stopped")
+                else:
+                    print(f"Emulation stop failed. Error: {result['error']}")
+            else:
+                print(f"Failed to start emulation. Error: {result['error']}")
+
+
     def __init__(self, transport: NfcRpcTransport):
         super().__init__(name='mf_ultralight')
         self.mf_ultralight = MfUltralight(transport)
@@ -109,3 +132,4 @@ class MfUltralightCommand(BaseCommand):
         self.add_child(self.ReadSignatureCommand(self.mf_ultralight))
         self.add_child(self.ReadCounterCommand(self.mf_ultralight))
         self.add_child(self.ReadTeringFlagCommand(self.mf_ultralight))
+        self.add_child(self.EmulateCommand(self.mf_ultralight))

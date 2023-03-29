@@ -29,4 +29,11 @@ class MfUltralight():
     def read_tearing_flag(self, flag_num: int) -> dict:
         self.mf_ul_proto.read_tearing_flag_req(flag_num)
         return self.mf_ul_proto.read_counter_resp()
-    
+
+    def emulate_start(self, data: bytes) -> dict:
+        self.mf_ul_proto.emulate_start_req(data)
+        return self.mf_ul_proto.emulate_start_resp()
+
+    def emulate_stop(self) -> dict:
+        self.mf_ul_proto.emulate_stop_req()
+        return self.mf_ul_proto.emulate_stop_resp()    
