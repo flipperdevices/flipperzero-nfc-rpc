@@ -22,6 +22,14 @@ class MfUltralightProto(NfcBaseProto):
 
     def read_version_resp(self) -> dict:
         resp = self.receive_cmd("mf_ultralight_read_version_resp")
+        field_names = [f.name for f in resp.DESCRIPTOR.fields]
+        return dict((field_name, self.printer(getattr(resp, field_name))) for field_name in field_names)
+    
+    def printer(self, var: any) -> str:
+        if isinstance(myvar, bytes):
+            return ...
+        elif isinstance(myvar, int):
+            return ...
         return {'error': resp.error,
                 'header': resp.header,
                 'vendor_id': resp.vendor_id,

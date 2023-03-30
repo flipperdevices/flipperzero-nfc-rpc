@@ -1,16 +1,34 @@
 from ..nfc_protobuf_glue import mf_ultralight_proto
 from ..nfc_rpc_transport import NfcRpcTransport
 
+def ProtoWrapper(fn):
+    fn_name = fn.__name__
+
+    def impl(self, *args):
+        print("magic!")
+        getattr(self.mf_ul_proto, fn_name + "_req")(*args)
+        return getattr(self.mf_ul_proto, fn_name + "_resp")()
+
+    return impl
+
 
 class MfUltralight():
     def __init__(self, transport: NfcRpcTransport) -> None:
         self.mf_ul_proto = mf_ultralight_proto.MfUltralightProto(transport)
 
-    def read_page(self, page: int) -> dict:
+    def read_page_(self, page: int) -> dict:
         self.mf_ul_proto.read_page_req(page)
         return self.mf_ul_proto.read_page_resp()
 
+    @ProtoWrapper
+    def read_page(self, page: int) -> dict:
+        pass
+
+    @ProtoWrapper
     def read_version(self) -> dict:
+        pass
+
+    def read_version_(self) -> dict:
         self.mf_ul_proto.read_version_req()
         return self.mf_ul_proto.read_version_resp()
 
