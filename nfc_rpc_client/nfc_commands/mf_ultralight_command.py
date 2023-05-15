@@ -45,11 +45,7 @@ class MfUltralightCommand(BaseCommand):
         def execute(self, args) -> None:
             print(f"Reading Mifare Ultralight Version")
             result = self.mf_ultralight.read_version()
-            printable_strings = {"header": "Header",
-                                 "vendor_id": "Vendor ID", }
             if result['error'] == 0:
-                for key, descr in printable_strings:
-                    print(f"...")
                 print(f"Header: {result['header']}")
                 print(f"Vendor ID: {result['vendor_id']}")
                 print(f"Product type: {result['prod_type']}")

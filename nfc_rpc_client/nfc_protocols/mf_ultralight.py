@@ -5,7 +5,6 @@ def ProtoWrapper(fn):
     fn_name = fn.__name__
 
     def impl(self, *args):
-        print("magic!")
         getattr(self.mf_ul_proto, fn_name + "_req")(*args)
         return getattr(self.mf_ul_proto, fn_name + "_resp")()
 

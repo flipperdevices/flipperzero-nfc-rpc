@@ -26,19 +26,12 @@ class MfUltralightProto(NfcBaseProto):
         return dict((field_name, self.printer(getattr(resp, field_name))) for field_name in field_names)
     
     def printer(self, var: any) -> str:
-        if isinstance(myvar, bytes):
-            return ...
-        elif isinstance(myvar, int):
-            return ...
-        return {'error': resp.error,
-                'header': resp.header,
-                'vendor_id': resp.vendor_id,
-                'prod_type': resp.prod_type,
-                'prod_subtype': resp.prod_subtype,
-                'prod_ver_major': resp.prod_ver_major,
-                'prod_ver_minor': resp.prod_ver_minor,
-                'storage_size': resp.storage_size,
-                'protocol_type': resp.protocol_type}
+        if isinstance(var, bytes):
+            return self.decode_bytes(var, len(var))
+        elif isinstance(var, int):
+            return var
+        else:
+            return var
 
     def write_page_req(self, page: int, data: bytes) -> None:
         req = mf_ultralight_pb2.WritePageRequest()
