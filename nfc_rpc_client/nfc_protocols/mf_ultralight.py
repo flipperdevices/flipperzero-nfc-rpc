@@ -15,10 +15,6 @@ class MfUltralight():
     def __init__(self, transport: NfcRpcTransport) -> None:
         self.mf_ul_proto = mf_ultralight_proto.MfUltralightProto(transport)
 
-    def read_page_(self, page: int) -> dict:
-        self.mf_ul_proto.read_page_req(page)
-        return self.mf_ul_proto.read_page_resp()
-
     @ProtoWrapper
     def read_page(self, page: int) -> dict:
         pass

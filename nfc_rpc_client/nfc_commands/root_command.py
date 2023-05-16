@@ -1,6 +1,7 @@
 from .base_command import BaseCommand
 from .nfca_command import NfcaCommand
 from .mf_ultralight_command import MfUltralightCommand
+from .mf_classic_command import MfClassicCommand
 from ..nfc_rpc_transport import NfcRpcTransport
 
 
@@ -17,3 +18,4 @@ class RootCommand(BaseCommand):
         self.add_child(self.QuitCommand())
         self.add_child(NfcaCommand(transport))
         self.add_child(MfUltralightCommand(transport))
+        self.add_child(MfClassicCommand(transport))
