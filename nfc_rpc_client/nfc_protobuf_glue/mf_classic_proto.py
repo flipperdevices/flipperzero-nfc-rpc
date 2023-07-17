@@ -49,4 +49,50 @@ class MfClassicProto(NfcBaseProto):
         resp = self.receive_cmd("mf_classic_read_block_resp")
         field_names = [f.name for f in resp.DESCRIPTOR.fields]
         return dict((field_name, self.printer(getattr(resp, field_name))) for field_name in field_names)
+
+    def write_block_req(self, block: int, key: bytes, key_type: str, data: bytes) -> None:
+        req = mf_classic_pb2.WriteBlockRequest()
+        req.block = block
+        req.key = key
+        if key_type.lower() == "a":
+            req.key_type = mf_classic_pb2.KeyTypeA
+        else:
+            req.key_type = mf_classic_pb2.KeyTypeB
+        req.data = data
+        self.send_cmd(req, "mf_classic_write_block_req")
     
+    def write_block_resp(self) -> dict:
+        resp = self.receive_cmd("mf_classic_write_block_resp")
+        field_names = [f.name for f in resp.DESCRIPTOR.fields]
+        return dict((field_name, self.printer(getattr(resp, field_name))) for field_name in field_names)
+
+    def read_value_req(self, block: int, key: bytes, key_type: str) -> None:
+        req = mf_classic_pb2.ReadValueRequest()
+        req.block = block
+        req.key = key
+        if key_type.lower() == "a":
+            req.key_type = mf_classic_pb2.KeyTypeA
+        else:
+            req.key_type = mf_classic_pb2.KeyTypeB
+        self.send_cmd(req, "mf_classic_read_value_req")
+    
+    def read_value_resp(self) -> dict:
+        resp = self.receive_cmd("mf_classic_read_value_resp")
+        field_names = [f.name for f in resp.DESCRIPTOR.fields]
+        return dict((field_name, self.printer(getattr(resp, field_name))) for field_name in field_names)
+    
+    def change_value_req(self, block: int, key: bytes, key_type: str, data: int) -> None:
+        req = mf_classic_pb2.ChangeValueRequest()
+        req.block = block
+        req.key = key
+        if key_type.lower() == "a":
+            req.key_type = mf_classic_pb2.KeyTypeA
+        else:
+            req.key_type = mf_classic_pb2.KeyTypeB
+        req.data = data
+        self.send_cmd(req, "mf_classic_change_value_req")
+    
+    def change_value_resp(self) -> dict:
+        resp = self.receive_cmd("mf_classic_change_value_resp")
+        field_names = [f.name for f in resp.DESCRIPTOR.fields]
+        return dict((field_name, self.printer(getattr(resp, field_name))) for field_name in field_names)

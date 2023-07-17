@@ -24,3 +24,17 @@ class MfClassic():
     def read_block(self, block: int, key: bytes, key_type: str) -> dict:
         pass
 
+    @ProtoWrapper
+    def write_block(self, block: int, key: bytes, key_type: str, data: bytes) -> dict:
+        pass
+
+    @ProtoWrapper
+    def read_value(self, block: int, key: bytes, key_type: str) -> dict:
+        pass
+
+    @ProtoWrapper
+    def change_value(self, block: int, key: bytes, key_type: str, data: int) -> dict:
+        pass
+
+    
+
